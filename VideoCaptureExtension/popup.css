@@ -1,0 +1,21 @@
+:root { color-scheme: light dark; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+body { margin: 0; width: 340px; background: #111827; color: #f9fafb; }
+main { padding: 18px; }
+h1 { margin: 0 0 6px; font-size: 22px; }
+.hint, .foot { color: #9ca3af; line-height: 1.5; }
+.hint { margin: 0 0 16px; }
+.foot { margin: 12px 0 0; font-size: 11px; }
+section { background: #1f2937; border: 1px solid #374151; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.label { color: #9ca3af; font-size: 11px; margin-bottom: 5px; }
+.value { font-weight: 600; line-height: 1.4; }
+.course-label { margin-top: 10px; }
+.course-value { color: #93c5fd; font-size: 12px; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
+.stats span { display: block; font-size: 20px; font-weight: 700; }
+.stats small { color: #9ca3af; }
+.status { min-height: 38px; color: #d1d5db; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+.destination { color: #93c5fd; font-size: 11px; line-height: 1.4; margin-bottom: 8px; }
+.lock { color: #fbbf24; font-size: 11px; margin: 8px 0; }
+button { width: 100%; border: 0; border-radius: 9px; padding: 10px 12px; margin-top: 8px; font-weight: 700; background: #2563eb; color: white; cursor: pointer; }
+button.secondary { background: #374151; }
+button:disabled { opacity: .45; cursor: default; }

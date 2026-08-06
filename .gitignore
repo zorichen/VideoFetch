@@ -1,0 +1,19 @@
+.DS_Store
+
+# macOS / Swift build products
+VideoDownloadAssistant/build/
+*.app
+
+# Local capture and verification data
+work/
+release-staging/
+*.ts
+*.capture.json
+
+# User-downloaded course output
+outputs/*/
+
+# Keep only the current portable release files under outputs
+outputs/*.zip
+!outputs/视频下载助手-macOS应用-0.8-AppleSilicon.zip
+!outputs/视频下载助手-Chrome扩展-1.1.zip

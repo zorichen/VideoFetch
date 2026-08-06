@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>视频下载助手</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <h1>视频下载助手</h1>
+      <p class="hint">保存正常播放产生的非加密媒体响应；结束时允许少量补片。</p>
+      <section>
+        <div class="label">当前视频</div>
+        <div id="title" class="value">尚未开始</div>
+        <div class="label course-label">课程目录</div>
+        <div id="course" class="course-value">未分类</div>
+      </section>
+      <section class="stats">
+        <div><span id="captured">0</span><small>已捕获</small></div>
+        <div><span id="pending">0</span><small>处理中</small></div>
+        <div><span id="errors">0</span><small>错误</small></div>
+      </section>
+      <div id="lock" class="lock">尚未识别到视频</div>
+      <div id="status" class="status">请在播放前点击开始捕获。</div>
+      <div class="destination">Chrome 先写入默认下载目录/outputs；macOS 助手自动搬到 ~/projects/renrenjiang/outputs/&lt;课程名称&gt;/</div>
+      <button id="start">开始捕获</button>
+      <button id="stop" class="secondary" disabled>结束捕获</button>
+      <p class="foot">切换视频时自动下载上一集及校验清单；结束捕获时收尾当前集。macOS 助手验证时长和完整解码。</p>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
