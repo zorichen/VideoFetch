@@ -42,23 +42,67 @@ final class MonitorModel: ObservableObject {
     @Published var records: [ConversionRecord] = []
     @Published var keepTS = true
 
-    let incomingDirectory: URL
-    let downloadDirectory: URL
+    @Published private(set) var incomingDirectory: URL
+    @Published private(set) var downloadDirectory: URL
     private var timer: Timer?
     private var previousSizes: [URL: Int64] = [:]
-    private var processing: Set<URL> = []
+    @Published private var processing: Set<URL> = []
+    var canChangeDirectories: Bool { processing.isEmpty }
 
     init() {
-        incomingDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)[0]
+        let defaultInput = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("outputs", isDirectory: true)
-        downloadDirectory = FileManager.default.homeDirectoryForCurrentUser
+        let defaultOutput = FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent("projects/renrenjiang/outputs", isDirectory: true)
-        try? FileManager.default.createDirectory(at: incomingDirectory, withIntermediateDirectories: true)
-        try? FileManager.default.createDirectory(at: downloadDirectory, withIntermediateDirectories: true)
-        startMonitoring()
+        incomingDirectory = DirectorySettings.load(DirectorySettings.inputKey, fallback: defaultInput)
+        downloadDirectory = DirectorySettings.load(DirectorySettings.outputKey, fallback: defaultOutput)
+        do {
+            try DirectorySettings.save(input: incomingDirectory, output: downloadDirectory)
+            startMonitoring()
+        } catch {
+            isMonitoring = false
+            status = "请重新选择目录：\(error.localizedDescription)"
+        }
+    }
+
+    func chooseDirectory(input: Bool) {
+        guard canChangeDirectories else { return }
+        let wasMonitoring = isMonitoring
+        stopMonitoring()
+        let panel = NSOpenPanel()
+        panel.title = input ? "选择 Chrome 输入目录（下载目录内的输出子目录）" : "选择最终 MP4 输出目录"
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        panel.canCreateDirectories = true
+        panel.directoryURL = input ? incomingDirectory : downloadDirectory
+        guard panel.runModal() == .OK, let selected = panel.url else {
+            if wasMonitoring { startMonitoring() }
+            return
+        }
+        let newInput = input ? selected : incomingDirectory
+        let newOutput = input ? downloadDirectory : selected
+        do {
+            try DirectorySettings.save(input: newInput, output: newOutput)
+            incomingDirectory = newInput.standardizedFileURL
+            downloadDirectory = newOutput.standardizedFileURL
+            previousSizes.removeAll()
+            if wasMonitoring { startMonitoring() }
+            else { status = "目录已保存；开始监控后生效。原目录中的文件保持原位。" }
+        } catch {
+            // Keep monitoring paused so the error remains visible and the user can correct it.
+            status = "目录未更改：\(error.localizedDescription)"
+        }
     }
 
     func startMonitoring() {
+        do {
+            try DirectorySettings.save(input: incomingDirectory, output: downloadDirectory)
+        } catch {
+            isMonitoring = false
+            status = "无法开始监控：\(error.localizedDescription)"
+            return
+        }
         isMonitoring = true
         status = "正在监控 Chrome 下载并归档到：\(downloadDirectory.path)"
         timer?.invalidate()
@@ -300,10 +344,12 @@ struct MonitorView: View {
                     .foregroundStyle(.secondary)
             }
 
-            GroupBox("固定下载目录") {
+            GroupBox("下载目录（修改后自动保存）") {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Chrome 临时写入：\(model.incomingDirectory.path)")
                         .font(.system(.caption, design: .monospaced)).textSelection(.enabled)
+                    Button("选择 Chrome 输入目录") { model.chooseDirectory(input: true) }
+                        .disabled(!model.canChangeDirectories)
                     HStack {
                         Image(systemName: "folder")
                         Text("最终目录：\(model.downloadDirectory.path)")
@@ -311,7 +357,11 @@ struct MonitorView: View {
                             .textSelection(.enabled)
                         Spacer()
                         Button("打开目录") { model.openFolder() }
+                        Button("选择输出目录") { model.chooseDirectory(input: false) }
+                            .disabled(!model.canChangeDirectories)
                     }
+                    Text("切换目录不会搬迁旧文件；转换进行中暂时不能修改目录。")
+                        .font(.caption).foregroundStyle(.secondary)
                 }.padding(8)
             }
 
@@ -350,7 +400,7 @@ struct MonitorView: View {
                 }
             }
 
-            Text("仅转换本地文件，不访问课程网站或 CDN。DRM/加密内容不会由扩展导出。")
+            Text("仅限个人学术研究，禁止商业使用。助手仅转换本地文件；扩展不导出 DRM/加密内容。")
                 .font(.caption).foregroundStyle(.secondary)
         }
         .padding(24)

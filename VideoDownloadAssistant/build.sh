@@ -3,11 +3,11 @@ set -euo pipefail
 
 ROOT="${0:A:h}"
 BUILD="$ROOT/build"
-FINAL_APP="$BUILD/视频下载助手-0.8.app"
-ARCHIVE="$BUILD/视频下载助手-0.8.zip"
+FINAL_APP="$BUILD/视频下载助手-0.9.app"
+ARCHIVE="$BUILD/视频下载助手-0.9.zip"
 STAGE=$(mktemp -d "${TMPDIR:-/tmp}/video-download-assistant.XXXXXX")
-APP="$STAGE/视频下载助手-0.8.app"
-SDK="/Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk"
+APP="$STAGE/视频下载助手-0.9.app"
+SDK="$(xcrun --sdk macosx --show-sdk-path)"
 MODULE_CACHE="$BUILD/ModuleCache"
 trap 'rm -rf "$STAGE"' EXIT
 
@@ -19,11 +19,12 @@ swiftc \
   -module-cache-path "$MODULE_CACHE" \
   -framework SwiftUI \
   -framework AppKit \
-  "$ROOT/Sources/main.swift" \
+  "$ROOT"/Sources/*.swift \
   -o "$APP/Contents/MacOS/VideoDownloadAssistant"
 cp "$ROOT/Info.plist" "$APP/Contents/Info.plist"
 cp "$ROOT/Tools/ffmpeg" "$APP/Contents/Resources/ffmpeg"
 cp "$ROOT/Assets/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
+cp "$ROOT/../LICENSE" "$APP/Contents/Resources/LICENSE"
 chmod +x "$APP/Contents/Resources/ffmpeg"
 xattr -cr "$APP"
 xattr -d com.apple.FinderInfo "$APP" 2>/dev/null || true

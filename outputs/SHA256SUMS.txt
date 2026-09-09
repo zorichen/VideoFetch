@@ -1,0 +1,2 @@
+5fefa96dbb3b16b96ac178d512287a7e33fac51f900b96d3ae1b4ff2bbd3c58a  视频下载助手-Chrome扩展-1.2.zip
+6f6dc876b9c344a656ce3cbda817d50c9b93509152cf1cfd9240b531c6a829e5  视频下载助手-macOS应用-0.9-AppleSilicon.zip

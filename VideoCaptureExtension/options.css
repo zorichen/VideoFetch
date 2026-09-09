@@ -1,0 +1,10 @@
+:root { color-scheme: light dark; font: 15px/1.6 system-ui, sans-serif; }
+body { margin: 0; }
+main { max-width: 720px; margin: 40px auto; padding: 0 24px; }
+h1 { font-size: 26px; }
+label { display: block; margin-top: 24px; font-weight: 600; }
+textarea, input { box-sizing: border-box; width: 100%; padding: 10px; margin-top: 6px; font: 14px/1.6 ui-monospace, monospace; border: 1px solid #888; border-radius: 6px; }
+textarea { resize: vertical; }
+.hint { opacity: .75; font-size: 13px; }
+button { margin-top: 12px; padding: 10px 20px; background: #295edc; color: white; border: 0; border-radius: 6px; cursor: pointer; }
+#status { min-height: 24px; }

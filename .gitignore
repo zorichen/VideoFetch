@@ -15,5 +15,5 @@ outputs/*/
 
 # Keep only the current portable release files under outputs
 outputs/*.zip
-!outputs/视频下载助手-macOS应用-0.8-AppleSilicon.zip
-!outputs/视频下载助手-Chrome扩展-1.1.zip
+!outputs/视频下载助手-macOS应用-0.9-AppleSilicon.zip
+!outputs/视频下载助手-Chrome扩展-1.2.zip

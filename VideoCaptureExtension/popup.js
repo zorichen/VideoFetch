@@ -7,6 +7,7 @@ const lockNode = document.querySelector("#lock");
 const statusNode = document.querySelector("#status");
 const startButton = document.querySelector("#start");
 const stopButton = document.querySelector("#stop");
+document.querySelector("#settings").addEventListener("click", () => chrome.runtime.openOptionsPage());
 
 async function message(type) {
   const response = await chrome.runtime.sendMessage({ type });

@@ -1,11 +1,5 @@
+importScripts("settings.js");
 const PROTOCOL_VERSION = "1.3";
-const RELATED_DOMAINS = {
-  "ke.renrenjiang.cn": [
-    "ke.renrenjiang.cn",
-    "qcloudvod.renrenjiang.cn",
-    "playvideo.vodplayvideo.net"
-  ]
-};
 
 let session = freshSession();
 
@@ -21,6 +15,7 @@ function freshSession() {
     exportFailures: [],
     pageHost: "",
     allowedHosts: [],
+    outputFolder: "outputs",
     responses: new Map(),
     captured: new Map(),
     errors: [],
@@ -38,8 +33,7 @@ function sendCommand(method, params = {}) {
 
 function isAllowed(urlText) {
   try {
-    const host = new URL(urlText).hostname;
-    return session.allowedHosts.some(item => host === item || host.endsWith("." + item));
+    return session.allowedHosts.includes(new URL(urlText).origin);
   } catch {
     return false;
   }
@@ -101,12 +95,20 @@ async function startCapture() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab?.id || !tab.url) throw new Error("没有可捕获的当前标签页。");
   const pageURL = new URL(tab.url);
-  const allowedHosts = RELATED_DOMAINS[pageURL.hostname] || [pageURL.hostname];
+  const settings = await CaptureSettings.load();
+  if (!settings.pageOrigins.includes(pageURL.origin)) {
+    throw new Error("当前页面未获允许。请打开域名与目录设置，配置并授权此网站。");
+  }
+  if (!await chrome.permissions.contains({ origins: CaptureSettings.permissionOrigins(settings) })) {
+    throw new Error("域名访问权限不足，请在设置中重新授权并保存。");
+  }
+  const allowedHosts = [...new Set([...settings.pageOrigins, ...settings.mediaOrigins])];
 
   session = freshSession();
   session.tabId = tab.id;
   session.pageHost = pageURL.hostname;
   session.allowedHosts = allowedHosts;
+  session.outputFolder = settings.outputFolder;
   session.startedAt = Date.now();
 
   await chrome.debugger.attach(target(), PROTOCOL_VERSION);
@@ -133,7 +135,7 @@ async function startCapture() {
 chrome.debugger.onEvent.addListener(async (source, method, params) => {
   if (!session.running || source.tabId !== session.tabId) return;
   if (method === "Network.responseReceived") {
-    if (isCourseMetadataURL(params.response.url)) {
+    if (isAllowed(params.response.url) && isCourseMetadataURL(params.response.url)) {
       session.responses.set(params.requestId, {
         url: params.response.url,
         mimeType: params.response.mimeType || "application/json",
@@ -262,7 +264,7 @@ function sanitizeFilename(value) {
 
 function outputPath(filename) {
   const folder = session.isCourse ? sanitizeFilename(session.courseName) : "未分类";
-  return `outputs/${folder}/${filename}`;
+  return `${session.outputFolder}/${folder}/${filename}`;
 }
 
 function mediaPlaylists() {
@@ -292,7 +294,7 @@ async function fetchSmallMissingSet(missing, totalCount) {
   }
   for (const url of missing) {
     if (!isAllowed(url)) throw new Error("缺失分片位于未经允许的域名。");
-    const response = await fetch(url, { credentials: "include", cache: "no-store" });
+    const response = await fetch(url, { credentials: "include", cache: "no-store", redirect: "error" });
     if (!response.ok) throw new Error(`补片失败：HTTP ${response.status}`);
     const bytes = new Uint8Array(await response.arrayBuffer());
     session.captured.set(url, {

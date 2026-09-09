@@ -1,0 +1,33 @@
+视频下载助手 — 个人学术研究专用许可 1.0
+Copyright (c) 2026 zorichen
+
+1. 适用范围
+本许可适用于本仓库中由本项目作者拥有版权的源代码、文档及原创资源。
+第三方软件及其组成部分（包括 FFmpeg）仍适用各自的许可证；本许可不修改、
+替代或限制第三方许可证所授予的权利。
+
+2. 有限授权
+在遵守本许可的前提下，允许自然人仅为其个人、非商业的学术学习或研究目的，
+查看、下载、复制、运行和修改本项目。允许为同一目的免费分享原始版本或修改
+版本，但必须保留本许可及版权声明，明确标注修改，且接收者须遵守同样的限制。
+
+3. 禁止商业使用
+不得将本项目或其修改版本用于任何商业目的，包括但不限于销售、付费服务、
+广告获利、商业产品集成、商业运营、受雇工作、商业委托研究或为企业提供服务。
+不在上述个人学术研究范围内的使用，以及任何商业使用，均未获得本许可授权。
+如需此类授权，必须事先取得版权所有者的单独书面许可。
+
+4. 内容与第三方权利
+本许可不授予任何视频、课程、网站内容、商标或其他第三方材料的使用或复制权。
+使用者必须具有保存相关内容的权限，不得绕过 DRM、加密保护或访问控制。
+
+5. 无担保
+本项目按“现状”提供，不作任何明示或默示担保。在适用法律允许的范围内，
+版权所有者不对使用本项目产生的损失或责任负责。违反本许可即终止本许可授权。
+
+本许可包含用途限制；本项目是源码可见项目，不属于 OSI 定义的开源软件。
+
+English summary (the Chinese terms above govern): Personal, non-commercial
+academic study and research only. Commercial use is prohibited without prior
+written permission. Preserve this license and attribution when sharing permitted
+copies or modifications. Third-party components retain their own licenses.
