@@ -8,7 +8,7 @@ root = Path(__file__).resolve().parents[1]
 source = root / "VideoCaptureExtension"
 version = json.loads((source / "manifest.json").read_text(encoding="utf-8"))["version"]
 short_version = ".".join(version.split(".")[:2])
-destination = root / "outputs" / f"视频下载助手-Chrome扩展-{short_version}.zip"
+destination = root / "outputs" / f"VideoFetch-Chrome-{version}.zip"
 destination.parent.mkdir(exist_ok=True)
 with ZipFile(destination, "w", ZIP_DEFLATED) as archive:
     for file in sorted(source.rglob("*")):

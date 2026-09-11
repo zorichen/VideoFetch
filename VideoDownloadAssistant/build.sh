@@ -3,10 +3,10 @@ set -euo pipefail
 
 ROOT="${0:A:h}"
 BUILD="$ROOT/build"
-FINAL_APP="$BUILD/视频下载助手-0.9.app"
-ARCHIVE="$BUILD/视频下载助手-0.9.zip"
+FINAL_APP="$BUILD/VideoFetch.app"
+ARCHIVE="$BUILD/VideoFetch-0.10.0-macOS-AppleSilicon.zip"
 STAGE=$(mktemp -d "${TMPDIR:-/tmp}/video-download-assistant.XXXXXX")
-APP="$STAGE/视频下载助手-0.9.app"
+APP="$STAGE/VideoFetch.app"
 SDK="$(xcrun --sdk macosx --show-sdk-path)"
 MODULE_CACHE="$BUILD/ModuleCache"
 trap 'rm -rf "$STAGE"' EXIT
@@ -20,7 +20,7 @@ swiftc \
   -framework SwiftUI \
   -framework AppKit \
   "$ROOT"/Sources/*.swift \
-  -o "$APP/Contents/MacOS/VideoDownloadAssistant"
+  -o "$APP/Contents/MacOS/VideoFetch"
 cp "$ROOT/Info.plist" "$APP/Contents/Info.plist"
 cp "$ROOT/Tools/ffmpeg" "$APP/Contents/Resources/ffmpeg"
 cp "$ROOT/Assets/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"

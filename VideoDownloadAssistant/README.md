@@ -1,6 +1,6 @@
-# 视频下载助手
+# VideoFetch
 
-macOS 助手 0.9.0。**仅限个人学术研究，禁止商业使用。** 详见 [LICENSE](../LICENSE)。
+macOS 助手 0.10.0。**仅限个人学术研究，禁止商业使用。** 详见 [LICENSE](../LICENSE)。
 
 原生 macOS 本地转换助手。它不会安装 HTTPS 根证书，也不会拦截浏览器流量。
 
@@ -28,7 +28,7 @@ chmod +x build.sh
 ./build.sh
 ```
 
-构建结果位于 `build/视频下载助手-0.9.app` 和 `build/视频下载助手-0.9.zip`。SDK 由 `xcrun` 自动定位；需要 Xcode Command Line Tools。
+构建结果位于 `build/VideoFetch.app` 和 `build/VideoFetch-0.9.zip`。SDK 由 `xcrun` 自动定位；需要 Xcode Command Line Tools。
 
 ## 限制
 

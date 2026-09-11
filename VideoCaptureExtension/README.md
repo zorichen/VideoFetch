@@ -1,4 +1,4 @@
-# 视频下载助手 Chrome 扩展 1.2.0
+# VideoFetch Chrome 扩展 1.3.0
 
 **仅限个人学术研究，禁止商业使用。** 详见根目录 [LICENSE](../LICENSE)。
 

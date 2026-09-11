@@ -1,6 +1,6 @@
-# 视频下载助手
+# VideoFetch
 
-“视频下载助手”由 Chrome 扩展和 macOS 本地助手组成，用于保存用户拥有保存权限、且不含 DRM 或加密保护的媒体。
+“VideoFetch”由 Chrome 扩展和 macOS 本地助手组成，用于保存用户拥有保存权限、且不含 DRM 或加密保护的媒体。
 
 **仅限个人学术研究，禁止商业使用。** 本项目采用[个人学术研究专用许可](LICENSE)，属于源码可见项目。第三方组件仍遵循各自许可证。
 
@@ -8,7 +8,7 @@
 
 - `VideoCaptureExtension/`：Chrome Manifest V3 扩展，复制正常播放已经返回的非加密媒体响应。
 - `VideoDownloadAssistant/`：SwiftUI macOS 助手，将捕获的 TS 搬运、无损封装为 MP4 并验证完整性。
-- `outputs/`：Chrome 扩展 1.2.0、macOS 助手 0.9.0 及安装说明。
+- `outputs/`：Chrome 扩展 1.3.0、macOS 助手 0.10.0 及安装说明。
 
 ## 下载与安装
 
@@ -49,3 +49,5 @@ macOS 构建通过 `xcrun` 自动选择已安装的 SDK，需 Xcode Command Line
 - 检测到 HLS `EXT-X-KEY` 或 Widevine、FairPlay、PlayReady DRM 时停止。
 - 仅允许已明确配置和授权的域名。
 - 仅用于你拥有保存权限的内容。
+
+升级改名保留 macOS bundle ID `local.codex.VideoDownloadAssistant`。Chrome 解压扩展应覆盖原加载目录后重新加载，保持扩展 ID 与已保存的域名和目录设置；不要另建路径重复加载。

@@ -22,16 +22,16 @@ for file in archives:
             for item in source.rglob("*"):
                 if item.is_file() and not any(p.startswith(".") for p in item.relative_to(source).parts):
                     assert archive.read(item.relative_to(root).as_posix()) == item.read_bytes(), item
-            assert json.loads(archive.read("VideoCaptureExtension/manifest.json"))["version"] == "1.2.0"
+            assert json.loads(archive.read("VideoCaptureExtension/manifest.json"))["version"] == "1.3.0"
             assert archive.read("VideoCaptureExtension/LICENSE") == license_bytes
         else:
-            prefix = "视频下载助手-0.9.app/Contents/"
+            prefix = "VideoFetch.app/Contents/"
             info = plistlib.loads(archive.read(prefix + "Info.plist"))
             source_info = plistlib.loads((root / "VideoDownloadAssistant/Info.plist").read_bytes())
             assert info == source_info
-            assert info["CFBundleShortVersionString"] == "0.9.0"
+            assert info["CFBundleShortVersionString"] == "0.10.0"
             assert archive.read(prefix + "Resources/LICENSE") == license_bytes
-            assert len(archive.read(prefix + "MacOS/VideoDownloadAssistant")) > 0
+            assert len(archive.read(prefix + "MacOS/VideoFetch")) > 0
             assert prefix + "_CodeSignature/CodeResources" in archive.namelist()
         print(f"PASS: {file.name}")
 checksums = "".join(f"{hashlib.sha256(file.read_bytes()).hexdigest()}  {file.name}\n" for file in archives)

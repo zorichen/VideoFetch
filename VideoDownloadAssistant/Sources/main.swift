@@ -4,7 +4,7 @@ import AppKit
 @main
 struct VideoDownloadAssistantApp: App {
     var body: some Scene {
-        WindowGroup("视频下载助手") {
+        WindowGroup("VideoFetch") {
             MonitorView()
                 .frame(minWidth: 720, minHeight: 460)
         }
@@ -339,7 +339,7 @@ struct MonitorView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             VStack(alignment: .leading, spacing: 5) {
-                Text("视频下载助手").font(.largeTitle.bold())
+                Text("VideoFetch").font(.largeTitle.bold())
                 Text("自动把 Chrome 扩展保存的 TS 无损封装为同名 MP4。")
                     .foregroundStyle(.secondary)
             }
